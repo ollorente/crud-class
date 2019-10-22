@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CRUD Class</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div id="app"></div>
+                <button id="button" class="btn btn-success">Create</button>
+                <button id="listClick" class="btn btn-primary">List</button>
+                <button id="getOneClick" class="btn btn-info">Get</button>
+                <button id="upadteClick" class="btn btn-warning">Update</button>
+                <button id="removeClick" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- <script src="js/main.js"></script> -->
+    <script>
+        const _URL = 'https://jsonplaceholder.typicode.com/posts'
+
+        const app = document.getElementById('app')
+        const button = document.getElementById('button')
+
+        button.addEventListener('click', () => { console.log('Hola')
+            const newPost = {
+                userId: 1,
+                id: 1,
+                title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+            }
+
+            console.log(newPost)
+            console.log(JSON.stringify(newPost))
+
+            fetch(`${_URL}/posts`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newPost)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch (e) {
+                console.error(e)
+            }
+        })
+    </script>
+</body>
+</html>
