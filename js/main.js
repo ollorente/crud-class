@@ -1,4 +1,5 @@
-const _URL = 'https://jsonplaceholder.typicode.com'
+// const _URL = 'https://jsonplaceholder.typicode.com'
+const _URL = 'https://photoshut-v1.herokuapp.com/api/v1'
 
 const app = document.getElementById('app')
 const createClick = document.getElementById('createClick')
@@ -34,13 +35,26 @@ createClick.addEventListener('click', (e) => {
 ListClick.addEventListener('click', (e) => {
     e.preventDefault()
 
-    fetch(`${_URL}/posts`, {
+    fetch(`${_URL}/users/admin/images`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
     .then(res => res.json())
     .then(data => {
         console.log(data)
+        app.innerHTML = ``
+        data.data.forEach(e => {
+            app.innerHTML += `
+            <div class="media bg-white" style="border-bottom:solid 1px #fff;">
+            <a href="/images/${e._id}"><img src="${e.image}" class="mr-3" alt="${e.title}" style="width:120px; height:160px; object-fit: cover; position: center center;"></a>
+                <div class="media-body py-3 mr-3" style="max-height:160px;">
+                    <a href="/images/${e._id}"><h5 class="mt-0 text-dark" style="height:70px; overflow:hidden; text-overflow: ellipsis;">${e.title}</h5></a>
+                    <div>${e.userId.username}</div>
+                    <div>${e.views} views</div>
+                </div>
+            </div>
+            `
+        })
     })
     .catch(e => {
         console.error(e)
@@ -50,13 +64,26 @@ ListClick.addEventListener('click', (e) => {
 GetOneClick.addEventListener('click', (e) => {
     e.preventDefault()
 
-    fetch(`${_URL}/posts/1`, {
+    fetch(`${_URL}/images/5cb906bb9cbb4a0017238e4c`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
     .then(res => res.json())
     .then(data => {
         console.log(data)
+        const e = data
+        debugger
+        app.innerHTML = ``
+        app.innerHTML = `
+        <div class="media bg-white" style="border-bottom:solid 1px #fff;">
+            <img src="${e.image}" class="mr-3" alt="${e.title}" style="width:120px; height:160px; object-fit: cover; position: center center;">
+            <div class="media-body py-3 mr-3" style="max-height:160px;">
+                <h5 class="mt-0" style="height:70px; overflow:hidden; text-overflow: ellipsis;">${e.title}</h5>
+                <div>${e.userId.username}</div>
+                <div>${e.views} views</div>
+            </div>
+        </div>
+        `
     })
     .catch(e => {
         console.error(e)
