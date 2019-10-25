@@ -1,5 +1,8 @@
 // const _URL = 'https://jsonplaceholder.typicode.com'
-const _URL = 'https://photoshut-v1.herokuapp.com/api/v1'
+const _URL = 'https://simple-blog-v1.herokuapp.com'
+const _Version = '/api/v1'
+const _Admin = '/api/v1/admin'
+const Token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGFkMWU5YTBmYjI3NTM0MGRjM2UwMjMiLCJpYXQiOjE1NzIwMzc0MDYsImV4cCI6MTU3MjI5NjYwNn0.Cs3eoVD_6oMUEWgJf1D8UyWnnp1OSMh-8CGlGiO59TI'
 
 const app = document.getElementById('app')
 const createClick = document.getElementById('createClick')
@@ -12,15 +15,19 @@ createClick.addEventListener('click', (e) => {
     e.preventDefault()
 
     const newPost = {
-        userId: 1,
-        id: 1,
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        username: 'etniastudio',
+        email: 'etniastudio@gmail.com',
+        password: 'Cb740525$',
+        firstName: 'EtniaStudio',
+        lastName: 'Group'
     }
 
-    fetch(`${_URL}/posts`, {
+    fetch(`${_URL}${_Version}/users`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'jwt': Token
+        },
         body: JSON.stringify(newPost)
     })
     .then(res => res.json())
@@ -35,7 +42,7 @@ createClick.addEventListener('click', (e) => {
 ListClick.addEventListener('click', (e) => {
     e.preventDefault()
 
-    fetch(`${_URL}/users/admin/images`, {
+    fetch(`${_URL}${_Version}/users`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -46,11 +53,11 @@ ListClick.addEventListener('click', (e) => {
         data.data.forEach(e => {
             app.innerHTML += `
             <div class="media bg-white" style="border-bottom:solid 1px #fff;">
-            <a href="/images/${e._id}"><img src="${e.image}" class="mr-3" alt="${e.title}" style="width:120px; height:160px; object-fit: cover; position: center center;"></a>
+                <a href="/users/${e.username}"><img src="https://www.gravatar.com/avatar/${e.gravatar}?s=160&r=pg" class="mr-3" alt="+${e.username}" style="width:120px; height:160px; object-fit: cover; position: center center;"></a>
                 <div class="media-body py-3 mr-3" style="max-height:160px;">
-                    <a href="/images/${e._id}"><h5 class="mt-0 text-dark" style="height:70px; overflow:hidden; text-overflow: ellipsis;">${e.title}</h5></a>
-                    <div>${e.userId.username}</div>
-                    <div>${e.views} views</div>
+                    <a href="/images/${e.username}"><h5 class="mt-0 text-dark" style="height:70px; overflow:hidden; text-overflow: ellipsis;">+${e.username}</h5></a>
+                    <div>${e.firstName} ${e.lastName}</div>
+                    <div>+${e.username} views</div>
                 </div>
             </div>
             `
@@ -64,25 +71,25 @@ ListClick.addEventListener('click', (e) => {
 GetOneClick.addEventListener('click', (e) => {
     e.preventDefault()
 
-    fetch(`${_URL}/images/5cb906bb9cbb4a0017238e4c`, {
+    fetch(`${_URL}${_Version}/users/ollorente`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
     .then(res => res.json())
     .then(data => {
         console.log(data)
-        const e = data
-        debugger
+        const e = data.data
         app.innerHTML = ``
         app.innerHTML = `
-        <div class="media bg-white" style="border-bottom:solid 1px #fff;">
-            <img src="${e.image}" class="mr-3" alt="${e.title}" style="width:120px; height:160px; object-fit: cover; position: center center;">
+        <div class="media bg-white mb-4" style="border-bottom:solid 1px #fff;">
+            <img src="https://www.gravatar.com/avatar/${e.gravatar}?s=160&r=pg" class="mr-3" alt="${e.username}" style="width:120px; height:160px; object-fit: cover; position: center center;">
             <div class="media-body py-3 mr-3" style="max-height:160px;">
                 <h5 class="mt-0" style="height:70px; overflow:hidden; text-overflow: ellipsis;">${e.title}</h5>
-                <div>${e.userId.username}</div>
-                <div>${e.views} views</div>
+                <div>${e.firstName} ${e.lastName}</div>
+                <div>+${e.username}</div>
             </div>
         </div>
+        <div class="card mb-3" id="posts"></div>
         `
     })
     .catch(e => {
@@ -94,15 +101,19 @@ UpdateClick.addEventListener('click', (e) => {
     e.preventDefault()
 
     const newPost = {
-        userId: 1,
-        id: 1,
-        title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, quae.",
-        body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aspernatur laudantium esse repellat, cupiditate, nihil illum ducimus iusto voluptatem, explicabo distinctio molestias sed ut velit aliquam ipsam similique animi quam."
+        username: 'etniastudio',
+        email: 'etniastudio@gmail.com',
+        password: 'Cb740525$',
+        firstName: 'EtniaStudio',
+        lastName: '© Group'
     }
 
-    fetch(`${_URL}/posts/1`, {
+    fetch(`${_URL}${_Version}/users/etniastudio`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'jwt': Token
+        },
         body: JSON.stringify(newPost)
     })
     .then(res => res.json())
@@ -117,9 +128,12 @@ UpdateClick.addEventListener('click', (e) => {
 RemoveClick.addEventListener('click', (e) => {
     e.preventDefault()
 
-    fetch(`${_URL}/posts/1`, {
+    fetch(`${_URL}${_Version}/posts/1`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'jwt': Token
+        }
     })
     .then(res => res.json())
     .then(data => {
