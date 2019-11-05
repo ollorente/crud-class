@@ -13,22 +13,18 @@
 
 <body>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <button id="createClick" class="btn btn-success">Create</button>
-                <button id="listClick" class="btn btn-primary">List</button>
-                <button id="getOneClick" class="btn btn-info">Get</button>
-                <button id="updateClick" class="btn btn-warning">Update</button>
-                <button id="removeClick" class="btn btn-danger">Delete</button>
-                <div id="app" class="my-4" style="object-fit: cover; position: center center;"></div>
-            </div>
-        </div>
+    <div id="app">
+        <app-nav></app-nav>
+        <app-view class="container">
+            <!-- <app-sidebar></app-sidebar> -->
+            <app-content></app-content>
+        </app-view>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
