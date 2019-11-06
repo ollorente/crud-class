@@ -1,4 +1,5 @@
 // const config = require('../config')
+// const axios = require('axios').default;
 
 Vue.component('appNav', {
     props: [],
@@ -14,6 +15,15 @@ Vue.component('appNav', {
             </ul>
         </div>
     </nav>
+    `
+})
+
+Vue.component('appView', {
+    props: [],
+    template: `
+    <main id="app-view" class="app-view">
+        <app-content></app-content>
+    </main>
     `
 })
 
@@ -33,26 +43,47 @@ Vue.component('appSidebar', {
 
 Vue.component('appContent', {
     template: `
-    <main id="app-content" class="app-content">
-        <div id="posted" class="posted">
-            <a href="/empresarios-inmobiliarios-trajeron-inversion-de-colombianos-en-el-exterior-al-pais">
-                <img src="https://res.cloudinary.com/dbszizqh4/image/upload/v1572147232/economia/bpadomcoh4kmhcbf4qkl.jpg" alt="Empresarios Inmobiliarios trajeron inversión de colombianos en el exterior al país" class="img-thumbnail-posts" />
+    <div id="app-content" class="app-content" v-if="posts">
+        <div id="posted" class="posted" v-for="item in posts" :key="item.slug">
+            <a :href="'/' + item.slug">
+                <img :src="item.image" :alt="item.title" class="img-thumbnail-posts" />
             </a>
-            <h1 class="subtitle"><a href="/empresarios-inmobiliarios-trajeron-inversion-de-colombianos-en-el-exterior-al-pais">Empresarios Inmobiliarios trajeron inversión de colombianos en el exterior al país</a></h1>
+            <h1 class="subtitle"><a :href="'/' + item.slug">{{ item.title }}</a></h1>
             <div class="post-flag">
                 <div class="info-user">
-                    <span class="info-user-img"><img src="https://www.gravatar.com/avatar/d8ba48aef066b1e1487c738541b3f794?s=40&f=y" alt="EtniaStudio © Group" class="img-thumbnail-avatar" /></span>
-                    <span class="info-user-data"><b>EtniaStudio © Group</b><br>@etniastudio</span>
+                    <span class="info-user-img"><img :src="'https://www.gravatar.com/avatar/' + item.userId.gravatar + '?s=40&f=y'" :alt="item.userId.firstName + ' ' + item.userId.lastName" class="img-thumbnail-avatar" /></span>
+                    <span class="info-user-data"><b>{{ item.userId.firstName }} {{ item.userId.lastName }}</b><br>@{{ item.userId.username }}</span>
                 </div>
-                <div><b>10</b> views</div>
+                <div><b>{{ item.views }}</b> views</div>
             </div>
             <p class="info-category">
-                <span class="info-category-name"><a href="/economia">Economía</a></span>
-                <span class="info-category-date">2019-10-27T03:33:52.665Z</span>
+                <span class="info-category-name"><a href="'/' + item.categoryId.slug">{{ item.categoryId.title }}</a></span>
+                <span class="info-category-date">{{ item.createdAt }}</span>
             </p>
         </div>
-    </main>
-    `
+    </div>
+    `,
+    data() {
+        return {
+            posts: []
+        }
+    },
+    async created() {
+       /* await axios.get(`https://simple-blog-v1.herokuapp.com/api/v1/posts`)
+        .then(response => {
+            console.log('DATA:', response.data.data)
+            return this.posts = response.data.data
+        })
+        .catch(error => {
+            console.error(error)
+        }) */
+        await fetch(`https://simple-blog-v1.herokuapp.com/api/v1/posts`)
+        .then(res => res.json())
+        .then(data => {
+            console.log('FETCH', data.data)
+            return this.posts = data.data
+        })
+    }
 })
 
 var app = new Vue({
@@ -66,15 +97,23 @@ var app = new Vue({
             { name: 'Entrar', url: '/entrar' }
         ]
     },
-    created() {
-        var info = document.getElementById('posted')
+    async created() {
+        /* var info = document.getElementById('posted')
         console.log(info)
         
-        fetch(`https://simple-blog-v1.herokuapp.com/api/v1/posts`)
+        await fetch(`https://simple-blog-v1.herokuapp.com/api/v1/posts`)
         .then(res => res.json())
         .then(data => {
             console.log(data.data)
-            return posts = data.data
+            return this.posts = data.data
         })
+
+        await axios.get(`https://simple-blog-v1.herokuapp.com/api/v1/posts`)
+        .then(data => {
+            console.log('DATA:', data)
+        })
+        .catch(error => {
+            console.error(error)
+        }) */
     }
 })
